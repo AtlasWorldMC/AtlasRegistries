@@ -1,23 +1,88 @@
 plugins {
     id 'java-library'
+    id 'maven-publish'
     id 'eclipse'
     id 'idea'
+    id 'org.ajoberstar.grgit' version '5.2.1'
 }
 
+boolean isSnapshot = System.getenv("RELEASE") != 'true';
 
-
-group = 'fr.atlasworld.registries'
-version = '1.0-SNAPSHOT'
+group = project_group
+try {
+    version = isSnapshot ? grgit.head().id.subSequence(0, 5) : grgit.tag.list().get(0).getName();
+} catch (IndexOutOfBoundsException e) {
+    version = "undefined"
+}
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://repository.atlasworld.fr/repository/maven-public/"
+    }
 }
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    api "fr.atlasworld.common:common:${atlas_common_version}"
+    api "fr.atlasworld.event:flow:${eventflow_version}"
 }
 
-test {
-    useJUnitPlatform()
+publishing {
+    repositories {
+        maven {
+            name 'AtlasWorld-Repo'
+
+            def release = "https://repository.atlasworld.fr/repository/maven-release/"
+            def snapshot = "https://repository.atlasworld.fr/repository/maven-snapshot/"
+            url = isSnapshot ? snapshot : release
+
+            credentials {
+                username = System.getenv("AW_REPO_USERNAME")
+                password = System.getenv("AW_REPO_PASSWORD")
+            }
+
+            metadataSources {
+                gradleMetadata()
+            }
+        }
+    }
+    publications {
+        AtlasCommon(MavenPublication) {
+            from components.java
+
+            pom {
+                name = project.name
+                description = project.description
+                licenses {
+                    license {
+                        name = 'GNU-GPL-v2.0'
+                        url = 'https://github.com/AtlasWorldMC/AtlasRegistries/blob/master/LICENSE'
+                    }
+                }
+            }
+        }
+    }
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(project.java_version))
+
+    withJavadocJar()
+    withSourcesJar()
+}
+
+eclipse {
+    classpath {
+        downloadSources = true
+    }
+}
+
+idea {
+    module {
+        downloadSources = true
+    }
+}
+
+compileJava {
+    options.encoding = "UTF-8"
 }
