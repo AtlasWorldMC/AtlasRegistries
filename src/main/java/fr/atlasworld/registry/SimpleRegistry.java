@@ -1,4 +1,4 @@
-package fr.atlasworld.registries;
+package fr.atlasworld.registry;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;

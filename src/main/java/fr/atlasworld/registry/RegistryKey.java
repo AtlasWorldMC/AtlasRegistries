@@ -1,4 +1,4 @@
-package fr.atlasworld.registries;
+package fr.atlasworld.registry;
 
 import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
@@ -133,7 +133,7 @@ public final class RegistryKey {
      * @return true if the key char is valid, false otherwise.
      */
     private static boolean isValidKeyChar(char c) {
-        return isValidNamespaceChar(c) || c == '/';
+        return c == '/' || isValidNamespaceChar(c);
     }
 
     /**

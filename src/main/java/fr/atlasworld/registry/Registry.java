@@ -1,10 +1,8 @@
-package fr.atlasworld.registries;
+package fr.atlasworld.registry;
 
-import fr.atlasworld.registries.event.RegistrationEvent;
+import fr.atlasworld.registry.event.RegistrationEvent;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.concurrent.ThreadSafe;
-import java.util.ConcurrentModificationException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
