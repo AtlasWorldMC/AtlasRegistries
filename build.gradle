@@ -47,8 +47,10 @@ publishing {
         }
     }
     publications {
-        AtlasCommon(MavenPublication) {
+        AtlasRegistry(MavenPublication) {
             from components.java
+
+            artifactId = 'registry'
 
             pom {
                 name = project.name
