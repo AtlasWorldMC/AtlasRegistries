@@ -15,7 +15,7 @@ import java.util.function.Supplier;
  *
  * @param <T> type of values to be registered.
  */
-public final class Register<T> {
+public class Register<T> {
     private final String namespace;
 
     private final Map<RegistryKey, Supplier<T>> registeredValues;
@@ -71,7 +71,7 @@ public final class Register<T> {
      */
     public void register(@NotNull Registry<T> registry) {
         Preconditions.checkNotNull(registry);
-        Preconditions.checkArgument(!this.registered, "Register ahs already seen the registry!");
+        Preconditions.checkArgument(!this.registered, "Register has already seen the registry!");
 
         this.registered = true;
         this.registeredValues.forEach((key, sup) -> {
