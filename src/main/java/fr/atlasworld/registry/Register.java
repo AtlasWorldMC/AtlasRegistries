@@ -16,12 +16,12 @@ import java.util.function.Supplier;
  * @param <T> type of values to be registered.
  */
 public class Register<T> {
-    private final String namespace;
+    protected final String namespace;
 
-    private final Map<RegistryKey, Supplier<T>> registeredValues;
-    private final List<RegistryObject<T>> objects;
+    protected final Map<RegistryKey, Supplier<T>> registeredValues;
+    protected final List<RegistryObject<T>> objects;
 
-    private boolean registered = false;
+    protected boolean registered = false;
 
     public Register(@NotNull String namespace) {
         Preconditions.checkArgument(RegistryKey.isValidNamespace(namespace), "Invalid namespace, must be [a-z0-9._-]: %s", namespace);
